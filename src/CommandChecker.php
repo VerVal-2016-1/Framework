@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__).'/command/AvailableCommand.php';
 require_once dirname(__FILE__).'/command/CreateCommand.php';
+require_once dirname(__FILE__).'/command/HelpCommand.php';
+require_once dirname(__FILE__).'/exception/CommandException.php';
 require_once dirname(__FILE__).'/metadata/Metadata.php';
 
 class CommandChecker{
@@ -44,31 +46,38 @@ class CommandChecker{
 	    $commands = AvailableCommand::get_available_commands();
 
 	    // cmd is a short name for command
+	    $no_args = 0;
 	    foreach($commands as $cmd => $shortcut){
 	        if(array_key_exists($cmd, $args)){
 	            $this->check_command($cmd, $args[$cmd]);
+	            $no_args++;
 	        }
 	        elseif(array_key_exists($shortcut, $args)){
 	            $this->check_command($shortcut, $args[$shortcut]);
+	            $no_args++;
 	        }
 	        else{
 	            continue;
 	        }
 	    }
+
+	    if($no_args == 0){
+	    	HelpCommand::get_metadata()->help();
+	    }
 	}
 
 	private function check_command($cmd, $cmd_index){
+
+		$command = TRUE;
 		switch ($cmd){
 			case AvailableCommand::CREATE:
 			case AvailableCommand::CREATE_SHORTCUT:
 				$cmd_metadata = CreateCommand::get_metadata();
-				$params = $this->get_command_args($cmd_metadata, $cmd_index);
-				$command = new CreateCommand($params);
 				break;
 			
 			case AvailableCommand::HELP:
 			case AvailableCommand::HELP_SHORTCUT:
-				// $command = new HelpCommand();
+				$cmd_metadata = HelpCommand::get_metadata();
 				break;
 
 			default:
@@ -76,9 +85,18 @@ class CommandChecker{
 				break;
 		}
 
-		// Add the command to the queue to be executed
-		if($command !== FALSE){
-			$this->exec_commands[] = $command;
+		// Get the command arguments and then add the command to the queue to be executed
+		if($command){
+
+			try{	
+				$params = $this->get_command_args($cmd_metadata, $cmd_index);
+				$command = new CreateCommand($params);
+				$this->exec_commands[] = $command;
+			}catch(CommandException $e){
+				echo $e->getMessage();
+				echo "\n";
+				$cmd_metadata->help();
+			}
 		}
 	}
 
@@ -88,11 +106,13 @@ class CommandChecker{
 
 		$params = array();
 
-		// Check if there is this much of arguments in argv array
-		$thereAreArgs = count($this->argv) > ($cmd_index + $params_quantity);
-		if($thereAreArgs){
-			for($i=1; $i <= $params_quantity; $i++){
+		for($i=1; $i <= $params_quantity; $i++){
+
+			$arg_exists = isset($this->argv[$cmd_index + $i]);
+			if($arg_exists){
 				$params[] = $this->argv[$cmd_index + $i];
+			}else{
+				throw new CommandException("MISSING_ARGUMENT", $i);
 			}
 		}
 
@@ -112,7 +132,7 @@ class CommandChecker{
 	            }
 	        }
 	    }else{
-	        $args = NULL;
+	        $args = array();
 	    }
 
 	    return $args;

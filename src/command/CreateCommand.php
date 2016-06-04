@@ -11,15 +11,36 @@ class CreateCommand extends Command{
     const CLASS_NAME_PARAM = 0;
 
     /* File modes */
-    const WRITE = 'w';  
-
-    public function __construct($params){
-        $this->params = $params;
-    }
+    const WRITE = 'w';
 
     // Define here the metadata class to use in this command class
     public static function get_metadata(){
         return new CreateMetadata();
+    }
+
+    protected function validate_params(){
+
+    }
+
+    public function execute(){  
+
+        $has_class_name = isset($this->params[self::CLASS_NAME_PARAM]);
+
+        if ($has_class_name){
+
+            $class_name = ucfirst($this->params[self::CLASS_NAME_PARAM]);
+
+            $class_test_name = $class_name.self::FILE_NAME_PATTERN;
+            
+            echo "\nCreating $class_name test class...\n";
+
+            $this->create_file($class_test_name);
+            
+            echo "\n".$class_test_name." successfully created!\n";
+        }
+        else{
+            self::get_metadata()->help();
+        }
     }
 
     private function create_file($file_name){
@@ -38,25 +59,5 @@ class CreateCommand extends Command{
 
         fclose($file);
 
-    }
-
-    public function execute(){  
-
-        $has_class_name = isset($this->params[self::CLASS_NAME_PARAM]);
-
-        if ($has_class_name){
-
-            $class_name = $this->params[self::CLASS_NAME_PARAM];
-            $class_test_name = $class_name.self::FILE_NAME_PATTERN;
-            
-            echo "\nCreating $class_name test class...\n";
-
-            $this->create_file($class_test_name);
-            
-            echo "\n".$class_test_name." successfully created!\n";
-        }
-        else{
-            self::get_metadata()->help();
-        }
     }
 }

@@ -11,6 +11,10 @@ class ErrorCode{
     private static $ERRORS = array(
         "INVALID_QUANTITY_OF_PARAMS" => array(
             1 => "Quantity of a command params must be greater than or equal to 0."
+        ),
+
+        "MISSING_ARGUMENT" => array(
+            2 => "Missing argument of command. Argument missing number "
         )
 
         // Add here your errors
