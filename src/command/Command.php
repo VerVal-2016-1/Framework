@@ -2,8 +2,10 @@
 
 require_once dirname(__FILE__).'/../metadata/Metadata.php';
 
-interface Command{
+abstract class Command{
 
-	public function execute();
-	public static function get_metadata();
+	protected $params;
+
+	public abstract function execute();
+	public abstract static function get_metadata();
 }

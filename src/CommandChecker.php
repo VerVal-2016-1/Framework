@@ -101,7 +101,7 @@ class CommandChecker{
 
 	private function get_args($argv){
 
-	    // If there arguments passed on command line
+	    // If there are arguments passed on command line
 	    if(count($argv) > 1){
 	        // Create an array with the args as keys
 	        $args = array();

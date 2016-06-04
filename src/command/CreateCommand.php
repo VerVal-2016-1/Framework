@@ -3,62 +3,60 @@
 require_once 'Command.php';
 require_once dirname(__FILE__).'/../metadata/CreateMetadata.php';
 
-class CreateCommand implements Command{
+class CreateCommand extends Command{
 
-	const FILE_NAME_PATTERN = "Test";
+    const FILE_NAME_PATTERN = "Test";
 
-	/* Positions of argv array */
-	const ARG_POSITION = 2;
+    /* Params order */
+    const CLASS_NAME_PARAM = 0;
 
-	/* File modes */
-	const WRITE = 'w';
+    /* File modes */
+    const WRITE = 'w';  
 
-	public function __construct($params){
-	}
+    public function __construct($params){
+        $this->params = $params;
+    }
 
-	// Define here the metadata class to use in this command class
-	public static function get_metadata(){
-		return new CreateMetadata();
-	}
+    // Define here the metadata class to use in this command class
+    public static function get_metadata(){
+        return new CreateMetadata();
+    }
 
-	function create($argv){
-	    
-	    $has_class_name = count($argv) > self::ARG_POSITION;
-	    
-	    if ($has_class_name){
-	        
-	        $class_name = $argv[self::ARG_POSITION];
-	        $class_test_name = $class_name.self::FILE_NAME_PATTERN;
-	        
-	        create_file($class_test_name);
+    private function create_file($file_name){
+        
+        $file = fopen($file_name.".php", self::WRITE);
 
-	    }
-	    else{
-	        help();
-	    }
+        $content = "<?php\n\n";
 
-	}
+        $content .= "require_once('UnitCaseTest');\n";
+        
+        $content .= "\nclass ".$file_name." extends UnitCaseTest {\n";
+        
+        $content .= "}";
 
-	function create_file($file_name){
-	    
-	    $file = fopen($file_name.".php", self::WRITE);
+        fwrite($file, $content);
 
-	    $content = "<?php\n\n";
+        fclose($file);
 
-	    $content .= "require_once('UnitCaseTest');\n";
-	    
-	    $content .= "\nclass ".$file_name." extends UnitCaseTest {\n";
-	    
-	    $content .= "}";
+    }
 
-	    fwrite($file, $content);
+    public function execute(){  
 
-	    fclose($file);
+        $has_class_name = isset($this->params[self::CLASS_NAME_PARAM]);
 
-	    echo $file_name." successfully created!\n"; 
-	}
+        if ($has_class_name){
 
-	public function execute(){
-		echo "\nExecuting create command...\n";
-	}
+            $class_name = $this->params[self::CLASS_NAME_PARAM];
+            $class_test_name = $class_name.self::FILE_NAME_PATTERN;
+            
+            echo "\nCreating $class_name test class...\n";
+
+            $this->create_file($class_test_name);
+            
+            echo "\n".$class_test_name." successfully created!\n";
+        }
+        else{
+            self::get_metadata()->help();
+        }
+    }
 }
