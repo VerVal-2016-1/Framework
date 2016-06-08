@@ -1,0 +1,21 @@
+{
+    "name": "siga/igniter_test",
+    "description": "A test framework to integrate PHPUnit and CodeIgniter",
+    "type": "library",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Italo Paiva",
+            "email": "italosensei@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-0": {
+            "Framework": "src/"
+        }
+    }
+}

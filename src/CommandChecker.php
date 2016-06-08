@@ -85,7 +85,7 @@ class CommandChecker{
 			case AvailableCommand::INIT_SHORTCUT:
 				$command = new InitCommand($this->argv, $cmd_index);
 				break;
-
+					
 			default:
 				$command = FALSE;
 				break;
@@ -93,7 +93,13 @@ class CommandChecker{
 
 		// Get the command arguments and then add the command to the queue to be executed
 		if($command){
-			$this->exec_commands[] = $command;
+			try{	
+				$this->exec_commands[] = $command;
+			}catch(CommandException $e){
+				echo $e->getMessage();
+				echo "\n";
+				$cmd_metadata->help();
+			}
 		}
 	}
 

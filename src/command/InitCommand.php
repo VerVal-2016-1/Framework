@@ -42,25 +42,27 @@ class InitCommand extends Command{
 
         // $overwrite = $this->params[self::OVERWRITE_PARAM];
         
-        // if(!$config_file_exists){
-        // }
+        if(!$config_file_exists){
             $file = fopen(self::CONFIG_FILE_PATH."/".self::PHPUNIT_CONFIG_FILE, self::WRITE);
+            $content = "<phpunit bootstrap=\"bootstrap.php\"\n";
+            $content .= "colors=\"true\"\n"; 
+            $content .= "convertErrorsToExceptions=\"true\"\n";
+            $content .= "convertNoticesToExceptions=\"true\"\n"; 
+            $content .= "convertWarningsToExceptions=\"true\"\n";
+            $content .= "processIsolation=\"false\"\n";
+            $content .= "stopOnFailure=\"false\"\n"; 
+            $content .= "syntaxCheck=\"false\"\n";
+            $content .= "verbose=\"true\">\n"; 
+            $content .= "</phpunit>\n";
+
+            fwrite($file, $content);
+
+            fclose($file);
+
+            echo "\nConfiguração realizada com sucesso!\n\n";
+        }
     
 
-        $content = "<phpunit bootstrap=\"bootstrap.php\"\n";
-        $content .= "colors=\"true\"\n"; 
-        $content .= "convertErrorsToExceptions=\"true\"\n";
-        $content .= "convertNoticesToExceptions=\"true\"\n"; 
-        $content .= "convertWarningsToExceptions=\"true\"\n";
-        $content .= "processIsolation=\"false\"\n";
-        $content .= "stopOnFailure=\"false\"\n"; 
-        $content .= "syntaxCheck=\"false\"\n";
-        $content .= "verbose=\"true\">\n"; 
-        $content .= "</phpunit>\n";
-
-        fwrite($file, $content);
-
-        fclose($file);
 
     }
 }
