@@ -14,11 +14,16 @@ class AvailableCommand{
     const INIT = "init";
     const INIT_SHORTCUT = "-i";
 
-	// Pattern: command => shortcut
+    // Force command - Depends of previous command 
+    const FORCE = "-force";
+    const FORCE_SHORTCUT = "-f";
+	
+    // Pattern: command => shortcut
     private static $AVAILABLE_COMMANDS = array(
         self::CREATE => self::CREATE_SHORTCUT,
         self::HELP => self::HELP_SHORTCUT,   
-        self::INIT => self::INIT_SHORTCUT	
+        self::INIT => self::INIT_SHORTCUT,
+        self::FORCE => self::FORCE_SHORTCUT	
 
         // Add new commands here and implement its metadata and command classes
     );

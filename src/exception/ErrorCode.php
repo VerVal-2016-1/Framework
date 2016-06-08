@@ -15,6 +15,9 @@ class ErrorCode{
 
         "MISSING_ARGUMENT" => array(
             2 => "Missing argument of command. Argument missing number "
+        ),
+        "UNKNOWN_COMMAND" => array(
+            3 => "Unknown command "
         )
 
         // Add here your errors

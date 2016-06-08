@@ -4,10 +4,10 @@ require_once 'Metadata.php';
 
 class InitMetadata extends Metadata{
 
-    const QUANTITY_OF_PARAMS = 0;
+    const MAX_QUANTITY_OF_PARAMS = 1;
 
     public function __construct(){
-        parent::__construct(self::QUANTITY_OF_PARAMS);
+        parent::__construct(self::MAX_QUANTITY_OF_PARAMS);
     }
 
     public function help(){
@@ -15,8 +15,34 @@ class InitMetadata extends Metadata{
         $help = "\n\tInit command HELP\n";
         $help .= "\nUsage: init \n"; 
         $help .= "init | -i |  Initialize default configuration\n\n";
-        $help .= "init -f| -i -f|  Overwrite configuration file if it exists\n\n";
+        $help .= "init -force|init -f  Overwrite configuration file if it exists\n\n";
 
         echo $help;
     }
+
+    public function get_command_args($all_params, $cmd_index){
+
+        $params = array();
+        $params_quantity = $this->get_params_num();
+
+        $quantity_all_params = count($all_params) - 2;
+
+        if($quantity_all_params == self::MAX_QUANTITY_OF_PARAMS){
+            
+            for($i=1; $i <= $params_quantity; $i++){
+
+                $arg_exists = isset($all_params[$cmd_index + $i]);
+                if($arg_exists){
+                    $params[] = $all_params[$cmd_index + $i];
+                }
+                else{
+                    throw new CommandException("MISSING_ARGUMENT", $i);
+                }
+            }
+            
+        }
+
+        return $params;
+    }
+
 }
