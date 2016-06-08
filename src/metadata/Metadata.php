@@ -1,11 +1,11 @@
 <?php
 
 require_once dirname(__FILE__).'/../exception/MetadataException.php';
+require_once dirname(__FILE__).'/../exception/CommandException.php';
 
 abstract class Metadata{
 
     protected $params_num;
-    protected $params;
 
     public function __construct($params_num){
         $this->set_params_num($params_num);
@@ -15,6 +15,24 @@ abstract class Metadata{
      * All metadata classes must implement it's own help command
      */
     public abstract function help();
+
+    public function get_command_args($all_params, $cmd_index){
+
+        $params = array();
+        $params_quantity = $this->get_params_num();
+
+        for($i=1; $i <= $params_quantity; $i++){
+
+            $arg_exists = isset($all_params[$cmd_index + $i]);
+            if($arg_exists){
+                $params[] = $all_params[$cmd_index + $i];
+            }else{
+                throw new CommandException("MISSING_ARGUMENT", $i);
+            }
+        }
+
+        return $params;
+    }
 
     /**
      * Set the quantity of params of the commmand

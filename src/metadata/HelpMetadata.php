@@ -27,6 +27,7 @@ class HelpMetadata extends Metadata{
         echo "--------------------------------------------------------------------------------------\n";
         echo "create | -c <class under test name>      Creates a class test for given class \n";
         echo "help |-h                                 Prints help information about the test manager\n";
+        echo "init | -i                                Initialize default configuration\n";
 
         echo "\n\n";
     }

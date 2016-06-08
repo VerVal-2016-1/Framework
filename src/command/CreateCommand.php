@@ -14,11 +14,11 @@ class CreateCommand extends Command{
     const WRITE = 'w';
 
     // Define here the metadata class to use in this command class
-    public static function get_metadata(){
-        return new CreateMetadata();
+    protected function set_metadata(){
+        $this->metadata = new CreateMetadata();   
     }
 
-    protected function validate_params(){
+    protected function validate_params($params){
 
     }
 
@@ -37,9 +37,6 @@ class CreateCommand extends Command{
             $this->create_file($class_test_name);
             
             echo "\n".$class_test_name." successfully created!\n";
-        }
-        else{
-            self::get_metadata()->help();
         }
     }
 

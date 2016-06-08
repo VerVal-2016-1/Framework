@@ -15,8 +15,8 @@ class InitCommand extends Command{
     const WRITE = 'w';
 
     // Define here the metadata class to use in this command class
-    public static function get_metadata(){
-        return new InitMetadata();
+    protected function set_metadata(){
+        $this->metadata = new InitMetadata();
     }
 
     protected function validate_params($params){

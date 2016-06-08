@@ -3,6 +3,7 @@
 require_once dirname(__FILE__).'/command/AvailableCommand.php';
 require_once dirname(__FILE__).'/command/CreateCommand.php';
 require_once dirname(__FILE__).'/command/HelpCommand.php';
+require_once dirname(__FILE__).'/command/InitCommand.php';
 require_once dirname(__FILE__).'/exception/CommandException.php';
 require_once dirname(__FILE__).'/metadata/Metadata.php';
 
@@ -62,7 +63,7 @@ class CommandChecker{
 	    }
 
 	    if($no_args == 0){
-	    	HelpCommand::get_metadata()->help();
+	    	(new HelpCommand($this->argv, 1))->help();
 	    }
 	}
 
@@ -72,12 +73,17 @@ class CommandChecker{
 		switch ($cmd){
 			case AvailableCommand::CREATE:
 			case AvailableCommand::CREATE_SHORTCUT:
-				$cmd_metadata = CreateCommand::get_metadata();
+				$command = new CreateCommand($this->argv, $cmd_index);
 				break;
 			
 			case AvailableCommand::HELP:
 			case AvailableCommand::HELP_SHORTCUT:
-				$cmd_metadata = HelpCommand::get_metadata();
+				$command = new HelpCommand($this->argv, $cmd_index);
+				break;
+
+			case AvailableCommand::INIT:
+			case AvailableCommand::INIT_SHORTCUT:
+				$command = new InitCommand($this->argv, $cmd_index);
 				break;
 
 			default:
@@ -87,36 +93,8 @@ class CommandChecker{
 
 		// Get the command arguments and then add the command to the queue to be executed
 		if($command){
-
-			try{	
-				$params = $this->get_command_args($cmd_metadata, $cmd_index);
-				$command = new CreateCommand($params);
-				$this->exec_commands[] = $command;
-			}catch(CommandException $e){
-				echo $e->getMessage();
-				echo "\n";
-				$cmd_metadata->help();
-			}
+			$this->exec_commands[] = $command;
 		}
-	}
-
-	private function get_command_args(Metadata $metadata, $cmd_index){
-
-		$params_quantity = $metadata->get_params_num();
-
-		$params = array();
-
-		for($i=1; $i <= $params_quantity; $i++){
-
-			$arg_exists = isset($this->argv[$cmd_index + $i]);
-			if($arg_exists){
-				$params[] = $this->argv[$cmd_index + $i];
-			}else{
-				throw new CommandException("MISSING_ARGUMENT", $i);
-			}
-		}
-
-		return $params;
 	}
 
 	private function get_args($argv){
