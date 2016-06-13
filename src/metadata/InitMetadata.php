@@ -21,7 +21,7 @@ class InitMetadata extends Metadata{
     public function commands_help(){
 
         $help = "init | -i                                 Initialize default configuration\n";
-        $help .= "init -force|init -f                      Overwrite configuration file if it exists\n";
+        $help .= "init -force|init -f                      Overwrite configuration files if they exist\n";
 
         echo $help;
     }

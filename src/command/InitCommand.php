@@ -7,7 +7,8 @@ require_once dirname(__FILE__).'/../command/AvailableCommand.php';
 class InitCommand extends Command{
 
     const PHPUNIT_CONFIG_FILE = "phpunit.xml";
-    const CONFIG_FILE_PATH = "application/tests";
+    const PHPUNIT_BOOTSTRAP_FILE = "bootstrap.php";
+    const CONFIG_FILE_PATH = "../application/tests/";
 
     /* Params order */
     const OVERWRITE_PARAM = 0;
@@ -42,11 +43,11 @@ class InitCommand extends Command{
 
     public function execute(){  
 
-        $this->create_phpunit_config_file();
+        $this->create_phpunit_config_files();
 
     }
 
-    private function create_phpunit_config_file(){
+    private function create_phpunit_config_files(){
         
         $dir_exists = file_exists(self::CONFIG_FILE_PATH); 
 
@@ -55,14 +56,21 @@ class InitCommand extends Command{
             mkdir(self::CONFIG_FILE_PATH, 0755, TRUE);
         }
 
-        $config_file_exists = file_exists(self::CONFIG_FILE_PATH."/".self::PHPUNIT_CONFIG_FILE); 
+        $config_file_exists = file_exists(self::CONFIG_FILE_PATH.self::PHPUNIT_CONFIG_FILE); 
 
         $has_params = !empty($this->params);
         if(!$config_file_exists){
-            $this->write_on_config_file();
-        }
+            $success = $this->create_phpunit_bootstrap_file();
+            if($success){
+                $this->write_on_config_file();
+                echo "\nConfiguração realizada com sucesso!\n\n";
+            }        }
         else if($config_file_exists and $has_params){
-            $this->write_on_config_file();
+            $success = $this->create_phpunit_bootstrap_file();
+            if($success){
+                $this->write_on_config_file();
+                echo "\nConfiguração realizada com sucesso!\n\n";
+            }
         }
         else if($this->valid_param){
             echo "\nA configuração já foi realizada!\n\n";
@@ -73,7 +81,7 @@ class InitCommand extends Command{
 
     private function write_on_config_file(){
 
-        $file = fopen(self::CONFIG_FILE_PATH."/".self::PHPUNIT_CONFIG_FILE, self::WRITE);
+        $file = fopen(self::CONFIG_FILE_PATH.self::PHPUNIT_CONFIG_FILE, self::WRITE);
 
         $content = "<phpunit bootstrap=\"bootstrap.php\"\n";
         $content .= "colors=\"true\"\n"; 
@@ -90,6 +98,14 @@ class InitCommand extends Command{
 
         fclose($file);
 
-        echo "\nConfiguração realizada com sucesso!\n\n";
     }
+
+    private function create_phpunit_bootstrap_file(){
+    
+        $index_file_path = "../index.php"; 
+        $success = copy($index_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
+
+        return $success;
+    }
+
 }

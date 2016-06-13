@@ -6,7 +6,7 @@ require_once dirname(__FILE__).'/../metadata/CreateMetadata.php';
 class CreateCommand extends Command{
 
     const FILE_NAME_PATTERN = "Test";
-    const UNIT_TESTS_PATH = "application/tests/unit_tests/";
+    const UNIT_TESTS_PATH = "../application/tests/unit_tests/";
 
     /* Params order */
     const CLASS_NAME_PARAM = 0;
