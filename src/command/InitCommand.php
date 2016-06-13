@@ -11,7 +11,6 @@ class InitCommand extends Command{
 
     /* Params order */
     const OVERWRITE_PARAM = 0;
-    const OVERWRITE_ARGUMENT = 0;
 
     /* File modes */
     const WRITE = 'w';
@@ -37,9 +36,9 @@ class InitCommand extends Command{
                     $this->valid_param = FALSE;
                     throw new CommandException("UNKNOWN_COMMAND", $overwrite);
                     break;
-            }
         }
-    }
+        
+}    }
 
     public function execute(){  
 

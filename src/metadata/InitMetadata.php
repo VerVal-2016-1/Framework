@@ -13,9 +13,15 @@ class InitMetadata extends Metadata{
     public function help(){
 
         $help = "\n\tInit command HELP\n";
-        $help .= "\nUsage: init \n"; 
-        $help .= "init | -i |  Initialize default configuration\n\n";
-        $help .= "init -force|init -f  Overwrite configuration file if it exists\n\n";
+        $help .= "\nUsage: init \n\n"; 
+        echo $help;
+        $this->commands_help();
+    }
+
+    public function commands_help(){
+
+        $help = "init | -i                                 Initialize default configuration\n";
+        $help .= "init -force|init -f                      Overwrite configuration file if it exists\n";
 
         echo $help;
     }

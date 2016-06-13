@@ -12,6 +12,9 @@ class HelpMetadata extends Metadata{
 
     public function help(){
 
+        $createMetadata = new CreateMetadata();
+        $initMetadata = new InitMetadata();
+
         echo "\n\n\t\t\t TEST MANAGER HELP \n";
 
         echo "Usage:\n";
@@ -25,10 +28,9 @@ class HelpMetadata extends Metadata{
         echo "| Available Commands:\n";
         echo "| Command Name                          Command Description\n";
         echo "--------------------------------------------------------------------------------------\n";
-        echo "create | -c <class under test name>      Creates a class test for given class \n";
         echo "help |-h                                 Prints help information about the test manager\n";
-        echo "init | -i                                Initialize default configuration\n";
-
+        $createMetadata->commands_help();
+        $initMetadata->commands_help();
         echo "\n\n";
     }
 }
