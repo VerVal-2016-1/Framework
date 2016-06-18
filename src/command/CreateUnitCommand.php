@@ -50,9 +50,9 @@ class CreateUnitCommand extends Command{
 
             $class_name = ucfirst($this->params[self::CLASS_NAME_PARAM]);
 
-            $class_file = $this->search_class_file($class_name);
+            // $class_file = $this->search_class_file($class_name);
 
-            if(!empty($class_file)){
+            // if(!empty($class_file)){
 
                 $class_test_name = $class_name.self::FILE_NAME_PATTERN;
                 
@@ -81,10 +81,10 @@ class CreateUnitCommand extends Command{
                     echo "\nClasse de Teste já foi criada!\n\n";
                     $this->metadata->help();
                 }
-            }
-            else{
-                throw new MetadataException("DOMAIN_CLASS_NOT_FOUND");
-            }
+            // }
+            // else{
+            //     throw new MetadataException("DOMAIN_CLASS_NOT_FOUND");
+            // }
         }
     }
 

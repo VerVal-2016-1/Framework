@@ -61,16 +61,16 @@ class InitCommand extends Command{
 
         $has_params = !empty($this->params);
         if(!$config_file_exists){
+            echo "Configurando Ignitest....\n";
             $success = $this->create_phpunit_bootstrap_file();
             if($success){
-                $this->write_on_phpunit_config_file();
                 $this->write_on_config_file();
                 echo "\nConfiguração realizada com sucesso!\n\n";
             }        }
         else if($config_file_exists and $has_params){
+            echo "Configurando Ignitest....\n";
             $success = $this->create_phpunit_bootstrap_file();
             if($success){
-                $this->write_on_phpunit_config_file();
                 $this->write_on_config_file();
                 echo "\nConfiguração realizada com sucesso!\n\n";
             }
@@ -81,6 +81,7 @@ class InitCommand extends Command{
         }
 
     }
+
 
     private function write_on_config_file(){
 
@@ -103,21 +104,15 @@ class InitCommand extends Command{
 
     }
 
-    private function write_on_phpunit_config_file(){
-        
-    }
-
     private function create_phpunit_bootstrap_file(){
-    
-        $index_file_path = "../../../index.php"; 
-        $success = copy($index_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
 
-        $file = fopen(self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE, self::APPEND);
-        $content = "\n include('config_ignitest.php');";
+        $template_file_path = dirname(__FILE__)."/config/bootstrap_template.php"; 
+        $success = copy($template_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
 
-        fwrite($file, $content);
-        fclose($file);
-        
+        echo "Configurando bootstrap file....\n";
+        echo "O caminho para as controllers e domains foi colocado no arquivo bootstrap....\n";
+        echo "Se o caminho do seu projeto não for padrão, mude este arquivo\n";
+
         return $success;
     }
 
