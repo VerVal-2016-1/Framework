@@ -2,9 +2,12 @@
 
 class AvailableCommand{
 
-	// Create command
-	const CREATE = "create";
-	const CREATE_SHORTCUT = "-c";
+	// Create commands
+	const CREATE_UNIT = "create_unit";
+	const CREATE_UNIT_SHORTCUT = "-ut";
+
+    const CREATE_INTEGRATION = "create_integration";
+    const CREATE_INTEGRATION_SHORTCUT = "-it";
 
 	// Help command
 	const HELP = "help";
@@ -20,8 +23,8 @@ class AvailableCommand{
 	
     // Pattern: command => shortcut
     private static $AVAILABLE_COMMANDS = array(
-        self::CREATE => self::CREATE_SHORTCUT,
-        self::HELP => self::HELP_SHORTCUT,   
+        self::CREATE_UNIT => self::CREATE_UNIT_SHORTCUT,
+        self::HELP => self::HELP_SHORTCUT,
         self::INIT => self::INIT_SHORTCUT,
         self::FORCE => self::FORCE_SHORTCUT	
 

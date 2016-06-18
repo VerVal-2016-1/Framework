@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Metadata.php';
+require_once 'CreateUnitMetadata.php';
 
 class HelpMetadata extends Metadata{
 
@@ -12,7 +13,8 @@ class HelpMetadata extends Metadata{
 
     public function help(){
 
-        $createMetadata = new CreateMetadata();
+        $createUnitMetadata = new CreateUnitMetadata();
+        // $createMetadata = new CreateIntegrationMetadata();
         $initMetadata = new InitMetadata();
 
         echo "\n\n\t\t\t TEST MANAGER HELP \n";
@@ -29,7 +31,7 @@ class HelpMetadata extends Metadata{
         echo "| Command Name                          Command Description\n";
         echo "--------------------------------------------------------------------------------------\n";
         echo "help |-h                                 Prints help information about the test manager\n";
-        $createMetadata->commands_help();
+        $createUnitMetadata->commands_help();
         $initMetadata->commands_help();
         echo "\n\n";
     }

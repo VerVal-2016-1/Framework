@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__).'/command/AvailableCommand.php';
-require_once dirname(__FILE__).'/command/CreateCommand.php';
+require_once dirname(__FILE__).'/command/CreateUnitCommand.php';
 require_once dirname(__FILE__).'/command/HelpCommand.php';
 require_once dirname(__FILE__).'/command/InitCommand.php';
 require_once dirname(__FILE__).'/exception/CommandException.php';
@@ -71,10 +71,15 @@ class CommandChecker{
 
 		$command = TRUE;
 		switch ($cmd){
-			case AvailableCommand::CREATE:
-			case AvailableCommand::CREATE_SHORTCUT:
-				$command = new CreateCommand($this->argv, $cmd_index);
+			case AvailableCommand::CREATE_UNIT:
+			case AvailableCommand::CREATE_UNIT_SHORTCUT:
+				$command = new CreateUnitCommand($this->argv, $cmd_index);
 				break;
+
+			// case AvailableCommand::CREATE_INTEGRATION:
+			// case AvailableCommand::CREATE_INTEGRATION_SHORTCUT:
+			// 	$command = new CreateIntegrationCommand($this->argv, $cmd_index);
+			// 	break;
 			
 			case AvailableCommand::HELP:
 			case AvailableCommand::HELP_SHORTCUT:

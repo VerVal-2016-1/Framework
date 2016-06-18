@@ -18,6 +18,9 @@ class ErrorCode{
         ),
         "UNKNOWN_COMMAND" => array(
             3 => "Unknown command "
+        ),
+        "DOMAIN_CLASS_NOT_FOUND" => array(
+            4 => "Domain class not found"
         )
 
         // Add here your errors

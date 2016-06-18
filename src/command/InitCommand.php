@@ -8,13 +8,14 @@ class InitCommand extends Command{
 
     const PHPUNIT_CONFIG_FILE = "phpunit.xml";
     const PHPUNIT_BOOTSTRAP_FILE = "bootstrap.php";
-    const CONFIG_FILE_PATH = "../application/tests/";
+    const CONFIG_FILE_PATH = "../";
 
     /* Params order */
     const OVERWRITE_PARAM = 0;
 
     /* File modes */
     const WRITE = 'w';
+    const APPEND = 'a';
 
     private $valid_param = TRUE;
 
@@ -62,12 +63,14 @@ class InitCommand extends Command{
         if(!$config_file_exists){
             $success = $this->create_phpunit_bootstrap_file();
             if($success){
+                $this->write_on_phpunit_config_file();
                 $this->write_on_config_file();
                 echo "\nConfiguração realizada com sucesso!\n\n";
             }        }
         else if($config_file_exists and $has_params){
             $success = $this->create_phpunit_bootstrap_file();
             if($success){
+                $this->write_on_phpunit_config_file();
                 $this->write_on_config_file();
                 echo "\nConfiguração realizada com sucesso!\n\n";
             }
@@ -100,11 +103,21 @@ class InitCommand extends Command{
 
     }
 
+    private function write_on_phpunit_config_file(){
+        
+    }
+
     private function create_phpunit_bootstrap_file(){
     
-        $index_file_path = "../index.php"; 
+        $index_file_path = "../../../index.php"; 
         $success = copy($index_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
 
+        $file = fopen(self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE, self::APPEND);
+        $content = "\n include('config_ignitest.php');";
+
+        fwrite($file, $content);
+        fclose($file);
+        
         return $success;
     }
 
