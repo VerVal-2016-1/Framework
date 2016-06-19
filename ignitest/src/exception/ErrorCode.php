@@ -21,6 +21,9 @@ class ErrorCode{
         ),
         "DOMAIN_CLASS_NOT_FOUND" => array(
             4 => "Domain class not found"
+        ),
+        "CONTROLLER_CLASS_NOT_FOUND" => array(
+            5 => "Controller class not found"
         )
 
         // Add here your errors

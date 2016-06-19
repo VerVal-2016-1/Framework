@@ -31,7 +31,8 @@ class AvailableCommand{
         self::HELP => self::HELP_SHORTCUT,
         self::INIT => self::INIT_SHORTCUT,
         self::RUN => self::RUN,
-        self::FORCE => self::FORCE_SHORTCUT	
+        self::FORCE => self::FORCE_SHORTCUT,
+        self::CREATE_INTEGRATION => self::CREATE_INTEGRATION_SHORTCUT
 
         // Add new commands here and implement its metadata and command classes
     );

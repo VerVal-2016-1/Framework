@@ -10,6 +10,7 @@ class InitCommand extends Command{
     const PHPUNIT_BOOTSTRAP_FILE = "bootstrap.php";
     const IGNITEST_CONFIG_FILE = "config_ignitest.php";
     const BASE_UNIT_CLASS_FILE = "UnitCaseTest.php";
+    const BASE_UNIT_CLASS_FILE = "UnitCaseTest.php";
     const CONFIG_FILE_PATH = "../";
 
     /* Params order */
