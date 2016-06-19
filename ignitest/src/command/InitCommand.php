@@ -8,6 +8,7 @@ class InitCommand extends Command{
 
     const PHPUNIT_CONFIG_FILE = "phpunit.xml";
     const PHPUNIT_BOOTSTRAP_FILE = "bootstrap.php";
+    const BASE_UNIT_CLASS_FILE = "UnitCaseTest.php";
     const CONFIG_FILE_PATH = "../";
 
     /* Params order */
@@ -61,19 +62,10 @@ class InitCommand extends Command{
 
         $has_params = !empty($this->params);
         if(!$config_file_exists){
-            echo "Configurando Ignitest....\n";
-            $success = $this->create_phpunit_bootstrap_file();
-            if($success){
-                $this->write_on_config_file();
-                echo "\nConfiguração realizada com sucesso!\n\n";
-            }        }
+            $this->set_ignite_config();  
+        }
         else if($config_file_exists and $has_params){
-            echo "Configurando Ignitest....\n";
-            $success = $this->create_phpunit_bootstrap_file();
-            if($success){
-                $this->write_on_config_file();
-                echo "\nConfiguração realizada com sucesso!\n\n";
-            }
+            $this->set_ignite_config();  
         }
         else if($this->valid_param){
             echo "\nA configuração já foi realizada!\n\n";
@@ -82,6 +74,24 @@ class InitCommand extends Command{
 
     }
 
+    private function set_ignite_config(){
+        
+        echo "Configurando Ignitest....\n";
+        $success = $this->create_phpunit_bootstrap_file();
+        if($success){
+            $this->write_on_config_file();
+            $this->create_base_classes();
+            echo "\nConfiguração realizada com sucesso!\n\n";
+        }
+    }
+
+    private function create_phpunit_bootstrap_file(){
+
+        $template_file_path = dirname(__FILE__)."/../templates/bootstrap_template.php"; 
+        $success = copy($template_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
+
+        return $success;
+    }
 
     private function write_on_config_file(){
 
@@ -104,16 +114,17 @@ class InitCommand extends Command{
 
     }
 
-    private function create_phpunit_bootstrap_file(){
+    private function create_base_classes(){
 
-        $template_file_path = dirname(__FILE__)."/config/bootstrap_template.php"; 
-        $success = copy($template_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
-
-        echo "Configurando bootstrap file....\n";
-        echo "O caminho para as controllers e domains foi colocado no arquivo bootstrap....\n";
-        echo "Se o caminho do seu projeto não for padrão, mude este arquivo\n";
+        $template_file_path = dirname(__FILE__)."/../templates/UnitCaseTest_template.php"; 
+       
+        mkdir(self::CONFIG_FILE_PATH."unit_tests/");
+        
+        $success = copy($template_file_path, self::CONFIG_FILE_PATH."unit_tests/".self::BASE_UNIT_CLASS_FILE);
 
         return $success;
+
     }
+
 
 }
