@@ -10,7 +10,7 @@ class InitCommand extends Command{
     const PHPUNIT_BOOTSTRAP_FILE = "bootstrap.php";
     const IGNITEST_CONFIG_FILE = "config_ignitest.php";
     const BASE_UNIT_CLASS_FILE = "UnitCaseTest.php";
-    const BASE_UNIT_CLASS_FILE = "UnitCaseTest.php";
+    const BASE_INTEGRATION_CLASS_FILE = "IntegrationTestCase.php";
     const CONFIG_FILE_PATH = "../";
 
     /* Params order */
@@ -121,18 +121,27 @@ class InitCommand extends Command{
 
     private function create_base_classes(){
 
-        $template_file_path = dirname(__FILE__)."/../templates/UnitCaseTest_template.php"; 
-       
-        $dir_exists = file_exists(self::CONFIG_FILE_PATH."unit_tests/");
-        
-        if(!$dir_exists){
-            mkdir(self::CONFIG_FILE_PATH."unit_tests/");
-        }
-        
-        $success = copy($template_file_path, self::CONFIG_FILE_PATH."unit_tests/".self::BASE_UNIT_CLASS_FILE);
+        $unit_success = $this->create_base_class("UnitCaseTest_template", "unit_tests", self::BASE_UNIT_CLASS_FILE);
+        $integration_success = $this->create_base_class("IntegrationTestCase_template", "integration_tests", self::BASE_INTEGRATION_CLASS_FILE);
+
+        $success = $unit_success && $integration_success;
 
         return $success;
+    }
 
+    private function create_base_class($template, $test_folder, $class_name){
+
+        $template_file_path = dirname(__FILE__)."/../templates/$template.php"; 
+       
+        $dir_exists = file_exists(self::CONFIG_FILE_PATH."$test_folder");
+        
+        if(!$dir_exists){
+            mkdir(self::CONFIG_FILE_PATH."$test_folder/");
+        }
+        
+        $success = copy($template_file_path, self::CONFIG_FILE_PATH."$test_folder/".$class_name);
+
+        return $success;
     }
 
 
