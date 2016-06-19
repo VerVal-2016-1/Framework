@@ -31,7 +31,7 @@
 	/**
 	 * Set here your domains path
 	 */
-	$domainsPath = APPPATH."data_types/";
+	$domainsPath = APPPATH."domain/";
 	define("DOMAINPATH", $domainsPath);
 
 /***********************************************/
