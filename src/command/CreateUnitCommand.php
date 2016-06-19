@@ -115,7 +115,7 @@ class CreateUnitCommand extends Command{
     }
 
 
-    public function search_class_file($class_name){
+    private function search_class_file($class_name){
         include '../bootstrap.php';    
         
         $file_path = "";

@@ -16,6 +16,7 @@ class HelpMetadata extends Metadata{
         $createUnitMetadata = new CreateUnitMetadata();
         // $createMetadata = new CreateIntegrationMetadata();
         $initMetadata = new InitMetadata();
+        $runMetadata = new RunMetadata();
 
         echo "\n\n\t\t\t TEST MANAGER HELP \n";
 
@@ -33,6 +34,7 @@ class HelpMetadata extends Metadata{
         echo "help |-h                                 Prints help information about the test manager\n";
         $createUnitMetadata->commands_help();
         $initMetadata->commands_help();
+        $runMetadata->commands_help();
         echo "\n\n";
     }
 }

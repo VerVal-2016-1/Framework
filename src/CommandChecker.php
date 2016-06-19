@@ -4,6 +4,7 @@ require_once dirname(__FILE__).'/command/AvailableCommand.php';
 require_once dirname(__FILE__).'/command/CreateUnitCommand.php';
 require_once dirname(__FILE__).'/command/HelpCommand.php';
 require_once dirname(__FILE__).'/command/InitCommand.php';
+require_once dirname(__FILE__).'/command/RunCommand.php';
 require_once dirname(__FILE__).'/exception/CommandException.php';
 require_once dirname(__FILE__).'/metadata/Metadata.php';
 
@@ -94,6 +95,10 @@ class CommandChecker{
 			case AvailableCommand::INIT:
 			case AvailableCommand::INIT_SHORTCUT:
 				$command = new InitCommand($this->argv, $cmd_index);
+				break;
+
+			case AvailableCommand::RUN:
+				$command = new RunCommand($this->argv, $cmd_index);
 				break;
 					
 			default:
