@@ -39,7 +39,7 @@ class CommandChecker{
 		foreach($commands as $command){
 			try {
 				$command->execute();
-			} 
+			}
 			catch (Exception $e) {
 				echo $e->getMessage()."\n";
 			}

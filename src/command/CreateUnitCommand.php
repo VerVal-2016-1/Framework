@@ -7,7 +7,7 @@ require_once dirname(__FILE__).'/../exception/MetadataException.php';
 class CreateUnitCommand extends Command{
 
     const FILE_NAME_PATTERN = "Test";
-    const UNIT_TESTS_PATH = "../tests/unit_tests/";
+    const UNIT_TESTS_PATH = "../unit_tests/";
  
     /* Params order */
     const CLASS_NAME_PARAM = 0;
@@ -48,8 +48,10 @@ class CreateUnitCommand extends Command{
 
         if ($has_class_name){
 
+
             $class_name = ucfirst($this->params[self::CLASS_NAME_PARAM]);
 
+            
             $class_file = $this->search_class_file($class_name);
 
             if(!empty($class_file)){
@@ -89,7 +91,6 @@ class CreateUnitCommand extends Command{
 
     private function create_file($file_name, $class_test_name){
 
-
         $file = fopen($file_name, self::WRITE);
 
         // Writing class name
@@ -104,8 +105,6 @@ class CreateUnitCommand extends Command{
         
         $content .= "}";
 
-
-
         fwrite($file, $content);
 
         fclose($file);
@@ -116,7 +115,8 @@ class CreateUnitCommand extends Command{
 
 
     private function search_class_file($class_name){
-        include '../bootstrap.php';    
+        // Load the ignitest configuration file
+        include "../config_ignitest.php";
         
         $file_path = "";
         $it = new RecursiveDirectoryIterator(DOMAINPATH);
