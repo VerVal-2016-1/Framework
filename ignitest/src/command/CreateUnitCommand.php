@@ -101,7 +101,7 @@ class CreateUnitCommand extends Command{
         $content .= "\nclass ".$class_test_name." extends UnitCaseTest {\n\n";
         
         // Writing the setUp
-        $content .= "\tpublic function setUp(){ \n\n \t\tparent::setUp(); \n \t}\n\n";
+        $content .= "\tpublic function setUp(){ \n \t\tparent::setUp(); \n \t}\n\n";
         
         $content .= "}";
 

@@ -9,6 +9,7 @@ class RunCommand extends Command{
 
     const UNIT_PARAM = "units";
     const INTEGRATION_PARAM = "integrations";
+    const ALL_PARAM = "all";
 
     private $test_type;
 
@@ -24,11 +25,9 @@ class RunCommand extends Command{
             $test_type = $params[self::TEST_TYPE_INDEX];
             switch ($test_type) {
                 case self::UNIT_PARAM:
-                    $this->test_type = self::UNIT_PARAM;
-                    break;
-
                 case self::INTEGRATION_PARAM:
-                    $this->test_type = self::INTEGRATION_PARAM;
+                case self::ALL_PARAM:
+                    $this->test_type = $test_type;
                     break;
 
                 default:
@@ -65,6 +64,17 @@ class RunCommand extends Command{
             }
             else{
                 echo "Não existem testes de integração implementados\n";
+            }
+        }
+        else if($this->test_type == self::ALL_PARAM){
+            $test_path = APPPATH."tests";
+            $dir_exists = file_exists($test_path);
+            if($dir_exists){
+                $result = shell_exec("phpunit ".$test_path);
+                echo $result;
+            }
+            else{
+                echo "Não existem testes implementados.\n";
             }
         }
         else{

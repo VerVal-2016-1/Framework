@@ -19,7 +19,8 @@ class RunMetadata extends Metadata{
 
     public function commands_help(){
         $help = "run units                                  Run units test class\n";
-        $help .= "run integrations                              Run integrations test class\n";
+        $help .= "run integrations                          Run integrations test class\n";
+        $help .= "run all                                   Run all tests\n";
 
         echo $help;
     }
