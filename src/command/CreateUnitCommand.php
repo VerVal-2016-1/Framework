@@ -7,7 +7,7 @@ require_once dirname(__FILE__).'/../exception/MetadataException.php';
 class CreateUnitCommand extends Command{
 
     const FILE_NAME_PATTERN = "Test";
-    const UNIT_TESTS_PATH = "../unit_tests/";
+    const UNIT_TESTS_PATH = "../tests/unit_tests/";
  
     /* Params order */
     const CLASS_NAME_PARAM = 0;
@@ -50,10 +50,9 @@ class CreateUnitCommand extends Command{
 
             $class_name = ucfirst($this->params[self::CLASS_NAME_PARAM]);
 
-            // $class_file = $this->search_class_file($class_name);
+            $class_file = $this->search_class_file($class_name);
 
-            // if(!empty($class_file)){
-
+            if(!empty($class_file)){
                 $class_test_name = $class_name.self::FILE_NAME_PATTERN;
                 
                 $dir_exists = file_exists(self::UNIT_TESTS_PATH); 
@@ -81,10 +80,10 @@ class CreateUnitCommand extends Command{
                     echo "\nClasse de Teste já foi criada!\n\n";
                     $this->metadata->help();
                 }
-            // }
-            // else{
-            //     throw new MetadataException("DOMAIN_CLASS_NOT_FOUND");
-            // }
+            }
+            else{
+                throw new MetadataException("DOMAIN_CLASS_NOT_FOUND");
+            }
         }
     }
 
@@ -93,13 +92,19 @@ class CreateUnitCommand extends Command{
 
         $file = fopen($file_name, self::WRITE);
 
+        // Writing class name
         $content = "<?php\n\n";
 
-        $content .= "require_once('UnitCaseTest');\n";
+        $content .= "require_once 'UnitCaseTest.php';\n";
         
-        $content .= "\nclass ".$class_test_name." extends UnitCaseTest {\n";
+        $content .= "\nclass ".$class_test_name." extends UnitCaseTest {\n\n";
+        
+        // Writing the setUp
+        $content .= "\tpublic function setUp(){ \n\n \t\tparent::setUp(); \n \t}\n\n";
         
         $content .= "}";
+
+
 
         fwrite($file, $content);
 
@@ -111,8 +116,7 @@ class CreateUnitCommand extends Command{
 
 
     public function search_class_file($class_name){
-        include '../bootstrap.php';
-        var_dump(DOMAINPATH);
+        include '../bootstrap.php';    
         
         $file_path = "";
         $it = new RecursiveDirectoryIterator(DOMAINPATH);

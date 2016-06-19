@@ -36,7 +36,12 @@ class CommandChecker{
 
 		$commands = $this->exec_commands;
 		foreach($commands as $command){
-			$command->execute();
+			try {
+				$command->execute();
+			} 
+			catch (Exception $e) {
+				echo $e->getMessage()."\n";
+			}
 		}
 	}
 

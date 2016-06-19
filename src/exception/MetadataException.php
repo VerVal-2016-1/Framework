@@ -5,7 +5,6 @@ require_once 'ErrorCode.php';
 class MetadataException extends Exception{
     
     public function __construct($error_label){
-
         try{
             
             $error = ErrorCode::error($error_label);

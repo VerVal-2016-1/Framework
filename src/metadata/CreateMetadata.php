@@ -33,6 +33,7 @@ class CreateMetadata extends Metadata{
 
         $quantity_all_params = count($all_params) - 2;
 
+
         $correct_quantity_params = $quantity_all_params <= self::MAX_QUANTITY_OF_PARAMS && $quantity_all_params >= self::MIN_QUANTITY_OF_PARAMS;
 
         if($correct_quantity_params){
@@ -48,6 +49,9 @@ class CreateMetadata extends Metadata{
                 }
             }
                 
+        }
+        else{
+            throw new CommandException("MISSING_ARGUMENT", 1);
         }
 
         return $params;
