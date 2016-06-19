@@ -1,6 +1,6 @@
 <?php
 
-require_once APPPATH.'/ignitest/src/exception/TestException.php';
+require_once APPPATH.'/tests/ignitest/src/exception/TestException.php';
 
 abstract class UnitCaseTest extends PHPUnit_Framework_TestCase{
 

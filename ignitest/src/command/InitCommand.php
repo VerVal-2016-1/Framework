@@ -8,6 +8,7 @@ class InitCommand extends Command{
 
     const PHPUNIT_CONFIG_FILE = "phpunit.xml";
     const PHPUNIT_BOOTSTRAP_FILE = "bootstrap.php";
+    const IGNITEST_CONFIG_FILE = "config_ignitest.php";
     const BASE_UNIT_CLASS_FILE = "UnitCaseTest.php";
     const CONFIG_FILE_PATH = "../";
 
@@ -26,7 +27,6 @@ class InitCommand extends Command{
     }
 
     protected function validate_params($params){
-        
         $has_params = !empty($params);
         if($has_params){        
             $overwrite = $params[self::OVERWRITE_PARAM];
@@ -45,12 +45,6 @@ class InitCommand extends Command{
 
     public function execute(){  
 
-        $this->create_phpunit_config_files();
-
-    }
-
-    private function create_phpunit_config_files(){
-        
         $dir_exists = file_exists(self::CONFIG_FILE_PATH); 
 
 
@@ -77,15 +71,17 @@ class InitCommand extends Command{
     private function set_ignite_config(){
         
         echo "Configurando Ignitest....\n";
-        $success = $this->create_phpunit_bootstrap_file();
-        if($success){
-            $this->write_on_config_file();
-            $this->create_base_classes();
+        $phpunit_created = $this->create_phphunit_config_file();
+        $ignitest_created = $this->create_ignitest_config_file();
+        $base_created = $this->create_base_classes();
+        $bootstrap_created = $this->create_phphunit_bootstrap_file();
+
+        if($bootstrap_created && $phpunit_created && $ignitest_created && $base_created){
             echo "\nConfiguração realizada com sucesso!\n\n";
         }
     }
 
-    private function create_phpunit_bootstrap_file(){
+    private function create_phphunit_bootstrap_file(){
 
         $template_file_path = dirname(__FILE__)."/../templates/bootstrap_template.php"; 
         $success = copy($template_file_path, self::CONFIG_FILE_PATH.self::PHPUNIT_BOOTSTRAP_FILE);
@@ -93,7 +89,15 @@ class InitCommand extends Command{
         return $success;
     }
 
-    private function write_on_config_file(){
+    private function create_ignitest_config_file(){
+
+        $template_file_path = dirname(__FILE__)."/../templates/config_ignitest_template.php"; 
+        $success = copy($template_file_path, self::CONFIG_FILE_PATH.self::IGNITEST_CONFIG_FILE);
+
+        return $success;
+    }
+
+    private function create_phphunit_config_file(){
 
         $file = fopen(self::CONFIG_FILE_PATH.self::PHPUNIT_CONFIG_FILE, self::WRITE);
 
@@ -118,7 +122,11 @@ class InitCommand extends Command{
 
         $template_file_path = dirname(__FILE__)."/../templates/UnitCaseTest_template.php"; 
        
-        mkdir(self::CONFIG_FILE_PATH."unit_tests/");
+        $dir_exists = file_exists(self::CONFIG_FILE_PATH."unit_tests/");
+        
+        if(!$dir_exists){
+            mkdir(self::CONFIG_FILE_PATH."unit_tests/");
+        }
         
         $success = copy($template_file_path, self::CONFIG_FILE_PATH."unit_tests/".self::BASE_UNIT_CLASS_FILE);
 
