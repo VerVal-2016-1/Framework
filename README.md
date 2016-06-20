@@ -81,6 +81,8 @@ With Ignitest, after you have configurated it, you can create unit and integrati
 	* ***OBS.:*** Remember to create your dataset and set the path to it on DATASET constant. You can create your MySQLXML dataset with **mysqldump** tool:
 
 			mysqldump --xml -t -u <your_mysql_user> --password=<your_mysql_password> <your_test_database> > <path_to_dataset.xml>
+			
+	* ***Tip***.: Once you are in your integration test class, an instance of your controller under test is available through the attribute $this->testClass.
 
 	* Run your integration tests
 
