@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * IgniTest - Test framework to integrate PHPUnit and CodeIgniter
  * PHP Version 5
@@ -13,6 +13,6 @@
 
 require_once dirname(__FILE__).'/src/CommandChecker.php';
 
-$checker = new CommandChecker($argv);
-$checker->execute_commands();
+$ckr = new CommandChecker($argv);
+$ckr->execute_commands();
 
